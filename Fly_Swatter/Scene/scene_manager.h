@@ -23,6 +23,7 @@ class cSceneManager {
 
 public:
   cSceneManager();
+  ~cSceneManager();
 
   void run();
 };

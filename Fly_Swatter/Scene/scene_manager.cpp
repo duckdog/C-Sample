@@ -10,6 +10,11 @@ current_scene_(state::Title) {
 }
 
 
+cSceneManager::~cSceneManager() {
+  delete play_scene_;
+}
+
+
 void scene::sceneChange() {
   switch (current_scene_) {
     case state::Title:
