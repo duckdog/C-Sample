@@ -1,4 +1,10 @@
-# C-Sample
-C++練習
+# C++ Sample
+C++ の練習
 
-a
+02/18
+.Ball_Container
+.Fly_Swatter
+
+03/06
+.Shot
+
