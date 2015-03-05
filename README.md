@@ -2,9 +2,9 @@
 C++ の練習
 
 02/18
- Ball_Container
- Fly_Swatter
+1.Ball_Container
+2.Fly_Swatter
 
 03/06
- Shot
+1.Shot
 
