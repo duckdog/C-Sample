@@ -9,13 +9,9 @@ enum {
 
 
 class cBall {
-  struct sBallData {
-    Vec2f pos_;
-    Vec2f speed_;
-    Color color_;
-  };
-
-  sBallData data_;
+  Vec2f pos_;
+  Vec2f speed_;
+  Color color_;
 
 public:
   cBall(const Vec2f&, Random&);

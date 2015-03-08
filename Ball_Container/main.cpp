@@ -21,30 +21,16 @@ int main() {
 
     // TIPS: G キーを押してる間、重力がかかる
     if (!ball.empty() && env.isPressKey('G')) {
-      for (auto& it : ball) {
-        it.gravity();
-      }
+      for (auto& it : ball) { it.gravity(); }
     }
 
     // TIPS: ボールの更新
-    for (auto it = ball.begin(); it != ball.end(); ++it) {
-
-      // TIPS: ボールが１個もなければ処理をスキップ
-      if (ball.empty()) { break; }
-
-      it->update();
-    }
+    for (auto& it : ball) { it.update(); }
 
     env.setupDraw();
 
     // TIPS: ボールの表示
-    for (auto it = ball.begin(); it != ball.end(); ++it) {
-
-      // TIPS: ボールが１個もなければ処理をスキップ
-      if (ball.empty()) { break; }
-
-      it->draw();
-    }
+    for (auto& it : ball) { it.draw(); }
 
     env.update();
   }

@@ -4,15 +4,22 @@
 typedef cBall  ball;
 
 
-// TIPS: 重力
-const float g_ = 1.0f;
-
 // TIPS: 画面端の情報
-// FIXME: もう少しいい方法がありそうな気がする
-const float leftEdge = -WIDTH / 2;
-const float rightEdge = WIDTH / 2;
-const float topEdge = HEIGHT / 2;
-const float bottomEdge = -HEIGHT / 2;
+struct sEdge {
+  float sup;   // 最小値
+  float inf;   // 最大値
+
+  explicit sEdge(const float, const float);
+};
+
+
+sEdge::sEdge(const float sup0, const float inf0) :
+sup(sup0), inf(inf0) {}
+
+
+const sEdge Horizon(-WIDTH / 2, WIDTH / 2);      // 左右
+const sEdge Vertical(-HEIGHT / 2, HEIGHT / 2);   // 上下
+
 
 // ボールのサイズなど
 enum {
@@ -23,39 +30,40 @@ enum {
 
 cBall::cBall(const Vec2f& pos,
              Random& random) {
-  data_.pos_ = pos;
+  pos_ = pos;
 
-  data_.speed_.x() = random.fromFirstToLast(-10.0f, 10.0f);
-  data_.speed_.y() = random.fromFirstToLast(-10.0f, 10.0f);
+  speed_.x() = random.fromFirstToLast(-10.0f, 10.0f);
+  speed_.y() = random.fromFirstToLast(-10.0f, 10.0f);
 
-  data_.color_.red()   = random.fromFirstToLast(0.25f, 1.0f);
-  data_.color_.green() = random.fromFirstToLast(0.25f, 1.0f);
-  data_.color_.blue()  = random.fromFirstToLast(0.25f, 1.0f);
+  color_.red() = random.fromFirstToLast(0.25f, 1.0f);
+  color_.green() = random.fromFirstToLast(0.25f, 1.0f);
+  color_.blue() = random.fromFirstToLast(0.25f, 1.0f);
 }
 
 
 void ball::gravity() {
-  data_.speed_.y() -= g_;
+  const float gravityPower = 1.0f;
+  speed_.y() -= gravityPower;
 }
 
 
 void ball::update() {
-  data_.pos_.x() += data_.speed_.x();
-  data_.pos_.y() += data_.speed_.y();
+  const int Sign = -1;
+
+  pos_.x() += speed_.x();
+  pos_.y() += speed_.y();
 
   // ｘ座標の反射処理
-  if (data_.pos_.x() < -WIDTH / 2 ||
-      data_.pos_.x() > WIDTH / 2) {
+  if (pos_.x() < Horizon.sup || pos_.x() > Horizon.inf) {
 
     // TIPS: 速度を反対方向にする
-    data_.speed_.x() *= -1;
+    speed_.x() *= Sign;
 
     // TIPS: 画面端と現在の位置を比較、
     // * 左端より小さければ左端に戻す (std::max())
     // * 右端より大きければ右端に戻す (std::min())
-    data_.pos_.x() =
-      std::min(rightEdge,
-      std::max(data_.pos_.x(), leftEdge));
+    pos_.x() = std::max(pos_.x(), Horizon.sup);
+    pos_.x() = std::min(pos_.x(), Horizon.inf);
 
     // * それぞれ、比較した結果、大きいほう、小さいほうを返す
     // * 左端より小さい = 左の画面外にはみ出る = 左端が「大きい」
@@ -67,20 +75,18 @@ void ball::update() {
 
   // ｙ座標の反射処理
   // TIPS: 上に同じ
-  if (data_.pos_.y() < -HEIGHT / 2 ||
-      data_.pos_.y() > HEIGHT / 2) {
+  if (pos_.y() < Vertical.sup || pos_.y() > Vertical.inf) {
 
-    data_.speed_.y() *= -1;
+    speed_.y() *= Sign;
 
-    data_.pos_.y() =
-      std::min(topEdge,
-      std::max(data_.pos_.y(), bottomEdge));
+    pos_.y() = std::max(pos_.y(), Vertical.sup);
+    pos_.y() = std::min(pos_.y(), Vertical.inf);
   }
 }
 
 
 void ball::draw() {
-  drawFillCircle(data_.pos_.x(), data_.pos_.y(),
-                 BallSize, BallSize, BallDivision,
-                 data_.color_);
+  drawFillCircle(pos_.x(), pos_.y(),
+                 BallSize, BallSize,
+                 BallDivision, color_);
 }
