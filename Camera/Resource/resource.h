@@ -22,9 +22,9 @@ enum SpriteSize {
 class cResource {
   std::map<SpriteID, Texture> graph_;
 
-public:
   cResource();
 
+public:
   static cResource getInstance();
 
   Texture getSprite(const SpriteID);
