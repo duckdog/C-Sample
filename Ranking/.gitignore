@@ -12,6 +12,5 @@
 include/
 Windows/
 res/
-src/
 Debug/
 Release/
