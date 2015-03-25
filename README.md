@@ -1,5 +1,5 @@
 # .gitignore 編集手順
-コマンド
+## コマンド
 echo ***** >> .gitignore
 
 ## *.sdf
